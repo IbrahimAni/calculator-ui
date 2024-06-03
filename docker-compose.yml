@@ -1,13 +1,5 @@
 version: '3'
 services:
-  app:
-    build: .
-    ports:
-      - "3000:3000"
-    volumes:
-      - .:/usr/src/app
-      - /usr/src/app/node_modules
-    command: npm start
   client:
     build:
       context: ./client
@@ -19,12 +11,11 @@ services:
     command: npm run dev
   test:
     build:
-      context: .
+      context: ./client
       dockerfile: Dockerfile.test
     volumes:
-      - .:/usr/src/app
-      - /usr/src/app/node_modules
+      - ./client:/app
+      - /app/node_modules
     depends_on:
-      - app
       - client
     command: npx playwright test

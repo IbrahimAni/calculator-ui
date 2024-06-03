@@ -1,6 +1,6 @@
 FROM mcr.microsoft.com/playwright:next
 
-WORKDIR /usr/src/app
+WORKDIR /app
 
 COPY package*.json ./
 RUN npm install
