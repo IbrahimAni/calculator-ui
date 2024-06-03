@@ -1,21 +1,27 @@
-version: '3'
+version: '3.8'
 services:
   client:
     build:
-      context: ./client
+      context: .
     ports:
       - "5173:5173"
     volumes:
-      - ./client:/app
+      - .:/app
       - /app/node_modules
     command: npm run dev
+    healthcheck:
+      test: ["CMD-SHELL", "curl -f http://localhost:5173 || exit 1"]
+      interval: 10s
+      timeout: 10s
+      retries: 3
   test:
     build:
-      context: ./client
+      context: .
       dockerfile: Dockerfile.test
     volumes:
-      - ./client:/app
+      - .:/app
       - /app/node_modules
     depends_on:
-      - client
+      client:
+        condition: service_healthy
     command: npx playwright test
